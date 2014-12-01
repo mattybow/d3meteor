@@ -1,0 +1,27 @@
+<template name="charBarChart">
+  <h5>character occurrence</h5>
+  <div class="row">
+	<div class="col-md-9">
+		<svg class="vert-chart" id="bro-chart"></svg>
+	</div>
+	<div class="col-md-3">
+		<div class="holder">
+			<div>
+				<h5>select a text</h5>
+				<ul class="nonlist">
+					{{#each excerpt}}
+						<li class="thin-list {{isShown}}">{{title}}</li>
+					{{/each}}
+				</ul>
+			</div>
+			<div class="text-holder">
+				<input type="text" class="form-control" placeholder="this is some text that will be rendered">
+			</div>
+		</div>
+	</div>
+  </div>
+  <div class="col-md-6">
+  	<svg class="vert-chart"></svg>
+  </div>
+  
+</template>
