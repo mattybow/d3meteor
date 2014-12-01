@@ -7,7 +7,6 @@ meteor-platform
 insecure
 iron:router
 d3
-stevezhu:sass
 stevezhu:lodash
 mizzao:bootstrap-3
 manuelschoebel:wait-on-lib
@@ -17,4 +16,3 @@ raix:famono
 ecwyne:polymer
 ecwyne:polymer-elements
 raix:eventemitter
-
