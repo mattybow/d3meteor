@@ -1,5 +1,18 @@
-Template.charBarChart.rendered=function(){
-	
+Template.famoCharBar.rendered=function(){
+
+	var domObj = this.find('#testSurf');
+	var context = famous.core.Engine.createContext(domObj);
+	var surf = new famous.core.Surface({
+		content:"here's a friggin surface",
+		size:[400,400],
+		properties:{
+			backgroundColor:'papayawhip',
+			textAlign:'center',
+			padding:'200px 200px'
+		}
+	});
+	context.add(surf);
+
 	_initialize();
 
 	function _initialize(){
@@ -121,7 +134,7 @@ function renderChart(doc){
 
 }
 
-Template.charBarChart.helpers({
+Template.famoCharBar.helpers({
 	excerpt:function(){
 		return ExcerptData.find({},{fields:{title:1}});
 	},
@@ -189,7 +202,7 @@ function parseText(input){
 	});
 }
 
-Template.charBarChart.events({
+Template.famoCharBar.events({
 	'click li':function(ev){
 		var selected_id = this.valueOf()._id;
 		var parent = $(ev.target).closest('li');
