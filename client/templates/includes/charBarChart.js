@@ -1,5 +1,18 @@
 Template.charBarChart.rendered=function(){
 
+	var domObj = this.find('#testSurf');
+	var context = famous.core.Engine.createContext(domObj);
+	var surf = new famous.core.Surface({
+		content:"here's a friggin surface",
+		size:[400,400],
+		properties:{
+			backgroundColor:'papayawhip',
+			textAlign:'center',
+			padding:'200px 200px'
+		}
+	});
+	context.add(surf);
+
 	_setSession();
 	_setObserver();
 	_renderChart();
@@ -106,15 +119,31 @@ Template.charBarChart.helpers({
 	excerpt:function(){
 		return ExcerptData.find({},{fields:{title:1}});
 	},
-	isShown:function(){
-		return Session.get('showAll') ? 'shown':'not-shown';
+	isSelected:function(){
+		var result='not-shown';
+		var selected=Session.get('selectedText');
+		if(selected === this.valueOf()._id || selected === undefined ){
+			result = 'shown';
+		}
+		return result;
+	},
+	getText:function(){
+		var selected = Session.get('selectedText');
+		if(selected){
+			return ExcerptData.findOne({_id:selected},{bodyText:1,_id:0}).bodyText;
+		} else {
+			return 'nothing found';
+		}
 	}
 });
 
 Template.charBarChart.events({
 	'click li':function(ev){
-		console.log(this.valueOf());
-		$(ev.target).addClass('selected');
-		Session.set('showAll',false);
+		var selected_id = this.valueOf()._id;
+		var parent = $(ev.target).parent('li');
+		parent.addClass('selected');
+		Session.set('selectedText',selected_id);
+		var pos = parent.position().top;
+		parent.css('transform',"translateY(-"+pos+"px)").blur();
 	}
 });

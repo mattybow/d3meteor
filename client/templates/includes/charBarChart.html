@@ -10,12 +10,15 @@
 				<h5>select a text</h5>
 				<ul class="nonlist">
 					{{#each excerpt}}
-						<li class="thin-list {{isShown}}">{{title}}</li>
+						<li class="thin-list {{isSelected}}">
+							<img src="/images/close.svg" alt="">
+							<div class="text-title">{{title}}</div>
+						</li>
 					{{/each}}
 				</ul>
 			</div>
 			<div class="text-holder">
-				<input type="text" class="form-control" placeholder="this is some text that will be rendered">
+				<input type="text" class="form-control" placeholder="this is some text that will be rendered" value="{{getText}}">
 			</div>
 		</div>
 	</div>
@@ -23,5 +26,6 @@
   <div class="col-md-6">
   	<svg class="vert-chart"></svg>
   </div>
+  <div id="testSurf"></div>
   
 </template>

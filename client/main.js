@@ -1,3 +1,6 @@
 //console.log('main.js ran');
-
-Meteor.Dispatcher = new EventEmitter();
+if(Meteor.isClient){
+	Meteor.Dispatcher = new EventEmitter();
+	famous.polyfills;
+  	famous.core.famous;
+}
