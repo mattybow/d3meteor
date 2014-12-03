@@ -6,19 +6,19 @@
 	</div>
 	<div class="col-md-3">
 		<div class="holder">
+			<div id="text-holder">
+				<textarea type="text" class="form-control no-border" placeholder="this is some text that will be rendered" value="{{getText}}" rows="15"></textarea>
+			</div>
 			<div>
 				<h5>select a text</h5>
 				<ul class="nonlist">
 					{{#each excerpt}}
 						<li class="thin-list {{isSelected}}">
-							<img src="/images/close.svg" alt="">
+							<img class="close-text" src="/images/close.svg" alt="">
 							<div class="text-title">{{title}}</div>
 						</li>
 					{{/each}}
 				</ul>
-			</div>
-			<div class="text-holder">
-				<input type="text" class="form-control" placeholder="this is some text that will be rendered" value="{{getText}}">
 			</div>
 		</div>
 	</div>

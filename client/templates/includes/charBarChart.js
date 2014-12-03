@@ -134,16 +134,38 @@ Template.charBarChart.helpers({
 		} else {
 			return 'nothing found';
 		}
+	},
+	showText:function(){
+		if(Session.get('selectedText')!==undefined){
+			return 'show';
+		} else {
+			return '';
+		}
 	}
 });
 
 Template.charBarChart.events({
 	'click li':function(ev){
 		var selected_id = this.valueOf()._id;
-		var parent = $(ev.target).parent('li');
-		parent.addClass('selected');
-		Session.set('selectedText',selected_id);
+		var parent = $(ev.target).closest('li');
 		var pos = parent.position().top;
-		parent.css('transform',"translateY(-"+pos+"px)").blur();
+		if(pos!==0){
+			parent.addClass('selected');
+			Session.set('selectedText',selected_id);
+			setTimeout(function(){
+				parent.css('transform',"translate(0,-"+pos+"px)").blur();
+				$('#text-holder').addClass('show');
+			}.bind(this),200);
+		}
+	},
+	'click .close-text':function(ev){
+		ev.stopPropagation();
+		var parent = $(ev.target).closest('li');
+		parent.css('transform','').blur();
+		$('#text-holder').removeClass('show');
+		parent.removeClass('selected');
+		setTimeout(function(){
+			Session.set('selectedText',undefined);
+		}.bind(this),200);
 	}
 });
