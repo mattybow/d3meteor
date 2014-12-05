@@ -133,6 +133,10 @@ Template.charBarChart.helpers({
 	excerpt:function(){
 		return ExcerptData.find({},{fields:{title:1}});
 	},
+	selectionIs:function(docName){
+		var selectedDoc = getDocName();
+		return selectedDoc === docName;
+	},
 	isSelected:function(){
 		var result='not-shown';
 		var selected=Session.get('selectedText');
@@ -229,7 +233,7 @@ Template.charBarChart.events({
 		Session.set('translateVal',0);
 	},
 	'click #special-btn':function(){
-		HTTP.get('/charBar/twitterStream/food',{
+		HTTP.get('/charBar/twitterStream/EricGarner',{
 			headers:{something:'what what'}
 		},function(err,res){
 			console.log(res);

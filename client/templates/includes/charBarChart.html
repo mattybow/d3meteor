@@ -7,7 +7,17 @@
 	<div class="col-md-3">
 		<div class="holder">
 			<div id="text-holder" class="{{showText}}">
+				{{#if selectionIs 'Twitter Feed'}}
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="#">
+					<span class="input-group-btn">
+						<button class="btn btn-default" id="special-btn" type="button"><span class="glyphicon glyphicon-flash"></span></button>
+					</span>
+				</div><!-- /input-group -->
+				<div class="tweet-holder"></div>
+				{{else}}
 				<textarea type="text" class="form-control no-border" placeholder="this is some text that will be rendered" value="{{getText}}" rows="16"></textarea>
+				{{/if}}
 			</div>
 			<div>
 				<h5>select a text</h5>
@@ -26,7 +36,7 @@
   <div class="col-md-6">
   	<svg class="vert-chart"></svg>
   </div>
-  <button class="btn btn-default" id="special-btn">press this</button>
+
   <a class="twitter-timeline" href="https://twitter.com/hashtag/EricGarner" data-widget-id="540574902785687552">#EricGarner Tweets</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
   
