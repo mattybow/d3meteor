@@ -3,9 +3,5 @@
     "bower": {}
   },
   "bower": {
-    "paper-button":{
-        "version":"0.5.1",
-        "source":"git://github.com/Polymer/paper-button.git"
-    }
   }
 }
