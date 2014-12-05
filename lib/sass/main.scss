@@ -1,8 +1,12 @@
+html,body{
+	height:100%;
+}
 body{
 	font-family: 'Lato', sans-serif;
 }
 .container{
 	padding:0 5%;
+	min-height:75%;
 }
 
 .hor-chart rect,.vert-chart rect{
@@ -103,7 +107,7 @@ paper-button{
 	width:100%;
 	opacity:0;
 	z-index:10;
-	transition:opacity .2s;
+	transition:opacity .2s, top .2s;
 }
 #text-holder.show{
 	opacity:1;
@@ -139,6 +143,10 @@ paper-button{
 	box-shadow:none;
 	-webkit-box-shadow:none;
 	resize:none;
+}
+.no-border:focus{
+	box-shadow:none;
+	-webkit-box-shadow:none;
 }
 @media (max-width:415px){
 	.navigation{

@@ -1,5 +1,5 @@
 Template.charBarChart.rendered=function(){
-	
+
 	_initialize();
 
 	function _initialize(){
@@ -16,6 +16,14 @@ Template.charBarChart.rendered=function(){
 			//console.log('tracker autorun');
 			renderChart(getDocName());
 		});
+
+		var tVal = Session.get('translateVal');
+		if(tVal){
+			$('.selected').css('transform',"translate(0,-"+tVal+"px)");
+		}
+
+		Session.setDefault('showText',false);
+
 	}
 
 };
@@ -128,8 +136,10 @@ Template.charBarChart.helpers({
 	isSelected:function(){
 		var result='not-shown';
 		var selected=Session.get('selectedText');
-		if(selected === this.valueOf()._id || selected === undefined ){
-			result = 'shown';
+		if(selected === this.valueOf()._id){
+			result = 'selected';
+		} else if (selected === undefined ){
+			result = '';
 		}
 		return result;
 	},
@@ -149,11 +159,7 @@ Template.charBarChart.helpers({
 		}
 	},
 	showText:function(){
-		if(Session.get('selectedText')!==undefined){
-			return 'show';
-		} else {
-			return '';
-		}
+		return Session.get('showText') ? 'show' : '';
 	}
 });
 
@@ -193,24 +199,40 @@ Template.charBarChart.events({
 	'click li':function(ev){
 		var selected_id = this.valueOf()._id;
 		var parent = $(ev.target).closest('li');
+		var $text = $('#text-holder');
+		var topDiff = parent.outerHeight()-41;
+		if(topDiff>0){
+			var curTop = $text.css('top').replace('px','');
+			var newTop = parseInt(curTop,10)+topDiff;
+			console.log(newTop);
+			$text.css('top',newTop+'px');
+		}
 		var pos = parent.position().top;
 		if(pos!==0){
-			parent.addClass('selected');
 			Session.set('selectedText',selected_id);
 			setTimeout(function(){
 				parent.css('transform',"translate(0,-"+pos+"px)").blur();
-				$('#text-holder').addClass('show');
+				Session.set('showText',true);
 			}.bind(this),200);
 		}
+		Session.set('translateVal',pos);
 	},
 	'click .close-text':function(ev){
 		ev.stopPropagation();
 		var parent = $(ev.target).closest('li');
-		parent.css('transform','').blur();
-		$('#text-holder').removeClass('show');
-		parent.removeClass('selected');
+		parent.removeClass('selected').css('transform','').blur();
+		Session.set('showText',false);
 		setTimeout(function(){
 			Session.set('selectedText',undefined);
+			$('#text-holder').css('top','45px');
 		}.bind(this),200);
+		Session.set('translateVal',0);
+	},
+	'click #special-btn':function(){
+		HTTP.get('/charBar/twitterStream/food',{
+			headers:{something:'what what'}
+		},function(err,res){
+			console.log(res);
+		});
 	}
 });
