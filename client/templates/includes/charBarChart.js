@@ -168,35 +168,89 @@ Template.charBarChart.helpers({
 });
 
 function parseText(input){
+	var unFiltHash = countChars(input.bodyText);				//returns obj with upper, lower, and symbol counts
+	var filtData = countLetters(unFiltHash);
+	filtData.title = input.title;
+	insertData(getFreqs(filtData));
+}
+
+function parseTweet(tweet){
+	//console.log('parsing tw');
+	var unFiltHash = countChars(tweet);
+	var filtData = countLetters(unFiltHash);
+	filtData.title = 'Twitter Feed';
+	calcNewFreqs(filtData);
+}
+
+function countChars(txt){
 	var counts = {};
-	var totalChars = 0;
-	var charCounts = [];
-	//console.log('PARSING',new Date().getTime());
-	_.each(input.bodyText,function(ch){
+	_.each(txt,function(ch){
 		if(ch in counts){
 			counts[ch]+=1;
 		} else {
 			counts[ch]=1;
 		}
 	});
+	return counts;
+}
+
+function countLetters(hash){
+	var output = {counts:{},total:0};
+
 	_.each('ABCDEFGHIJKLMNOPQRSTUVWXYZ',function(letter){
-		var upperCount = counts[letter];
+		var upperCount = hash[letter];
 		if (upperCount ===undefined) upperCount=0;
-		var lowerCount = counts[letter.toLowerCase()];
+		var lowerCount = hash[letter.toLowerCase()];
 		if (lowerCount ===undefined) lowerCount=0;
 		var count = upperCount + lowerCount;
-		var obj={};
-		obj[letter]=count;
-		totalChars += count;
-		charCounts.push(obj);
+		if(isNaN(count)) count = 0;
+		output.counts[letter]=count;
+		output.total += count;
 	});
-	//console.log('PARSING COMPLETE',new Date().getTime());
-	var doc = input.title;
-	_.each(charCounts,function(obj){
-		for (var letter in obj){
-			CharData.insert({letter:letter,frequency:obj[letter]/totalChars,doc:doc});
-		}
+
+	return output;
+}
+
+function getFreqs(data){
+	var doc = data.title;
+	var totalChars = data.total;
+	var totalAdjust = data.total ? data.total:1;
+	return _.map(data.counts,function(v,k){
+		return {letter:k,
+				frequency:v/totalAdjust,
+				doc:doc,
+				sampleSize:totalChars
+				};
+			});
+}
+
+function insertData(docs){
+	_.each(docs,function(doc){
+		CharData.insert(doc);
 	});
+}
+
+function calcNewFreqs(data){
+	var doc = data.title;
+	var total = data.total;
+	var curData = CharData.find({doc:doc},{sort:{letter:1}});
+
+	curData.forEach(function(elem){
+		var letter = elem.letter;
+		var newTotal = parseInt(elem.sampleSize,10) + parseInt(total,10);
+		var oldCount = elem.frequency * elem.sampleSize;
+		var newCount = data.counts[letter] + oldCount;
+		var freq = newCount/newTotal;
+		CharData.update({_id:elem._id},
+						{$set:
+							{frequency:freq,
+							sampleSize:newTotal
+							}
+						},
+						{upsert:true}
+						);
+	}.bind(this));
+
 }
 
 Template.charBarChart.events({
@@ -237,6 +291,11 @@ Template.charBarChart.events({
 			headers:{something:'what what'}
 		},function(err,res){
 			console.log(res);
-		});
+			twStream.on('EricGarner',function(tw){
+				var txt = tw.text;
+				parseTweet(txt);
+				$('#tweet-holder').prepend('<p>'+txt+'</p>');
+			});
+		}.bind(this));
 	}
 });

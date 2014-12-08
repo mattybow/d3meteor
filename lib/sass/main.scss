@@ -148,6 +148,10 @@ paper-button{
 	box-shadow:none;
 	-webkit-box-shadow:none;
 }
+#tweet-holder{
+	max-height: 300px;
+	overflow-y: auto;
+}
 @media (max-width:415px){
 	.navigation{
 		padding:10px 10px;

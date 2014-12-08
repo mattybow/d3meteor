@@ -3,5 +3,14 @@
     "bower": {}
   },
   "bower": {
+  	"socket.io-client":{
+  		"version":"1.2.1",
+  		"additionalFiles":[
+  			"socket.io.js"
+  		]
+  	},
+  	"sockjs-client":{
+  		"version":"0.3.4"
+  	}
   }
 }

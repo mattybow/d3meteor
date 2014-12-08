@@ -11,9 +11,13 @@ mizzao:bootstrap-3
 manuelschoebel:wait-on-lib
 mquandalle:bower
 gadicohen:famous-views
-raix:famono
 raix:eventemitter
 iron:router
 stevezhu:sass
 http
 mrt:twit
+mrt:sockjs
+npm-container
+meteorhacks:npm
+lepozepo:streams
+
