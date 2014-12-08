@@ -253,45 +253,63 @@ function calcNewFreqs(data){
 
 }
 
+function sanitize(input){
+	var regex = /[^A-Za-z0-9]/g;
+	return input.replace(regex,'');
+}
+
 Template.charBarChart.events({
 	'click li':function(ev){
 		var selected_id = this.valueOf()._id;
 		var parent = $(ev.target).closest('li');
 		var $text = $('#text-holder');
-		var topDiff = parent.outerHeight()-41;
-		if(topDiff>0){
-			var curTop = $text.css('top').replace('px','');
-			var newTop = parseInt(curTop,10)+topDiff;
-			console.log(newTop);
-			$text.css('top',newTop+'px');
-		}
 		var pos = parent.position().top;
 		if(pos!==0){
+			var topDiff = parent.outerHeight()-41;							//positions text-holder below title
+			if(topDiff>0){
+				var curTop = $text.css('top').replace('px','');
+				var newTop = parseInt(curTop,10)+topDiff;
+				console.log(newTop);
+				$text.css('top',newTop+'px');
+			}
+
 			Session.set('selectedText',selected_id);
 			setTimeout(function(){
-				parent.css('transform',"translate(0,-"+pos+"px)").blur();
+				parent.css('transform',"translate(0,-"+pos+"px)").blur();	//sets position of the title
 				Session.set('showText',true);
 			}.bind(this),200);
+			Session.set('translateVal',pos);
 		}
-		Session.set('translateVal',pos);
 	},
 	'click .close-text':function(ev){
 		ev.stopPropagation();
 		var parent = $(ev.target).closest('li');
 		parent.removeClass('selected').css('transform','').blur();
-		Session.set('showText',false);
+		Session.set('showText',false);						//hides text-holder
 		setTimeout(function(){
 			Session.set('selectedText',undefined);
-			$('#text-holder').css('top','45px');
+			$('#text-holder').css('top','45px');			//resets text-holder position
 		}.bind(this),200);
-		Session.set('translateVal',0);
+		Session.set('translateVal',0);						//resets position of the title
 	},
-	'click #special-btn':function(){
-		HTTP.get('/charBar/twitterStream/EricGarner',{
+	'submit form':function(ev){
+		ev.preventDefault();
+		var url = '/charBar/twitterStream/';
+		var userInput = $('#hashtag').val();
+		var cleanInput = sanitize(userInput);
+		if(!cleanInput) {
+			cleanInput = 'EricGarner';
+		}
+		if('#'+cleanInput !== userInput){
+			$('#hashtag').val('#'+cleanInput);
+		}
+		url += cleanInput;
+
+		HTTP.get(url,{
 			headers:{something:'what what'}
 		},function(err,res){
 			console.log(res);
-			twStream.on('EricGarner',function(tw){
+			twStream.on(cleanInput,function(tw){
 				var txt = tw.text;
 				parseTweet(txt);
 				$('#tweet-holder').prepend('<p>'+txt+'</p>');

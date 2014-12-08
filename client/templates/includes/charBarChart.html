@@ -8,12 +8,12 @@
 		<div class="holder">
 			<div id="text-holder" class="{{showText}}">
 				{{#if selectionIs 'Twitter Feed'}}
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="#EricGarner">
+				<form class="input-group">
+					<input type="text" class="form-control" id="hashtag" placeholder="#EricGarner">
 					<span class="input-group-btn">
-						<button class="btn btn-default" id="special-btn" type="button"><span class="glyphicon glyphicon-flash"></span></button>
+						<button class="btn btn-default" id="special-btn" type="submit"><span class="glyphicon glyphicon-flash"></span></button>
 					</span>
-				</div><!-- /input-group -->
+				</form><!-- /input-group -->
 				<div id="tweet-holder">{{getText}}</div>
 				{{else}}
 				<textarea type="text" class="form-control no-border" placeholder="this is some text that will be rendered" value="{{getText}}" rows="16"></textarea>

@@ -10,7 +10,6 @@ stevezhu:lodash
 mizzao:bootstrap-3
 manuelschoebel:wait-on-lib
 mquandalle:bower
-gadicohen:famous-views
 raix:eventemitter
 iron:router
 stevezhu:sass
@@ -20,4 +19,3 @@ mrt:sockjs
 npm-container
 meteorhacks:npm
 lepozepo:streams
-
