@@ -304,6 +304,7 @@ Template.charBarChart.events({
 			$('#hashtag').val('#'+cleanInput);
 		}
 		url += cleanInput;
+		console.log(cleanInput);
 
 		HTTP.get(url,{
 			headers:{something:'what what'}
